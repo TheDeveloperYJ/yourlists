@@ -1,26 +1,46 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
-import './App.css';
-import Form from './components/Form.js'
+import {BrowserRouter as Router,Route,Switch} from 'react-router-dom'
+import Home from './components/Home.js'
+import {Provider} from 'react-redux'
+import Login from './components/Login';
+import Register from './components/Register';
+import store from './store'
+import {logoutuser} from './actions/authActions'
+import Todolist from './components/TodoList.js'
+import  jwt_decode  from 'jwt-decode';
+import setAuthToken from './utils/setAuthToken';
+import { setCurrentUser } from './actions/authActions';
+import PrivateRoute from './components/PrivateRoute';
+
+if(localStorage['jwt-token']){
+  setAuthToken(localStorage['jwt-token'])
+  const decoded = jwt_decode(localStorage['jwt-token'])
+  store.dispatch(setCurrentUser(decoded))
+
+  const currentTime = Date.now()/1000;
+  if(decoded.exp < currentTime){
+    store.dispatch(logoutuser())
+    window.location.href = '/login'
+  }
+}
 
 class App extends Component {
-  componentDidMount() {
-    fetch('/home')
-    .then((res)=>res.json())
-    .then(data => console.log(data))
-  }
-  
   render() {
     return (
+      <Provider store={store}>
+      <Router>
+      <div>
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">Welcome to YourLists</h1>
-        </header>
-        <br/>
-        <br/>
-        <Form/>
-        <a href="/home">Go to express</a>
+       <Route exact path='/login' component={Login}/>
+       <Route exact path='/register' component={Register}/>
+       <Route exact path='/' component={Home}/>
+      <Switch>
+       <PrivateRoute exact path='/todolist' component={Todolist}/>
+       </Switch>
       </div>
+      </div>
+      </Router>
+      </Provider>
     );
   }
 }

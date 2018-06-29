@@ -1,5 +1,54 @@
 body {
-  margin: 0;
-  padding: 0;
+  margin:0 auto;
+  padding-top: 20px;
   font-family: sans-serif;
+  background: #2c3fcade;
+}
+.App >.nav {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  background:black;
+  padding-top: 20px;
+  
+}
+
+.nav >.auth> .home {
+  grid-column-start:1;
+  grid-column-end: 3;
+  text-align:center;
+}
+
+.nav > .auth {
+ display: flex;
+ justify-content: flex-end;
+ 
+}
+
+.nav>.auth>.register {
+   flex:1;
+  text-align:center;
+}
+
+.nav>.auth>.login {
+  flex: 1;
+  text-align:center;
+}
+
+.nav > .logout {
+  background: black;
+  display:flex;
+  padding-top: 20px;
+
+
+}
+.nav>.logout>.home1 {
+  flex:1;
+  margin-left:60px;
+  padding-bottom: 10px;
+  
+}
+.nav>.logout>.authLogout {
+  text-align:center;
+  flex:1;
+  
 }
